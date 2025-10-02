@@ -1,0 +1,54 @@
+RESET Signal (Pin 21)
+
+Purpose: Used to restart (initialize) the microprocessor to a known state.
+Type: Active High input signal.
+🔹 Working Process
+Applied after Power-On
+When power is switched on, RESET must be applied for at least 50 µs to properly initialize the 8086.
+Duration
+RESET must remain active (HIGH) for at least 4 clock cycles.
+This ensures the microprocessor properly clears its internal states.
+When RESET is Active (HIGH)
+Execution stops (CPU does not fetch or execute instructions).
+Address Bus, Data Bus, Control Bus → All go to High Impedance (tri-stated).
+(This avoids conflict with other devices on the bus during reset.)
+ALE (Address Latch Enable) = LOW
+HLDA (Hold Acknowledge) = LOW
+After RESET Returns to LOW
+CPU starts execution from a predefined memory location:
+CS = FFFFh, IP = 0000h → Physical address = FFFF0h (the reset vector).
+From here, the microprocessor begins its normal instruction execution.
+🔹 Summary
+Pin 21 (RESET) reinitializes the microprocessor.
+Active HIGH input, must be held HIGH for at least 4 clock cycles and 50 µs after power-on.
+While active:
+Buses are tri-stated,
+ALE & HLDA are low.
+When released (LOW): execution starts at FFFF0h.
+
+
+Pin 23 → TEST
+
+
+Type: Input pin to the 8086 CPU.
+Purpose: Used for synchronization with the 8087 Numeric Data Processor (NDP / Math Coprocessor).
+🔹 How it Works
+Connection with 8087
+The BUSY output signal of the 8087 is directly connected to the TEST input of the 8086.
+When 8087 is Busy
+If the 8087 is executing a numeric instruction, it raises its BUSY signal = HIGH.
+This makes the TEST pin = HIGH.
+Seeing TEST HIGH, the 8086 enters WAIT state (halts execution temporarily).
+When 8087 Finishes
+Once the coprocessor finishes its task, it sets BUSY = LOW.
+This drives the TEST pin LOW.
+8086 detects TEST = LOW → It resumes program execution normally.
+🔹 Why is this Needed?
+The 8086 cannot directly execute floating-point or complex math instructions.
+Instead, it offloads those tasks to the 8087 coprocessor.
+To keep synchronization, 8086 must wait until 8087 finishes before continuing.
+The TEST pin provides this handshake mechanism.
+🔹 Summary
+TEST (Pin 23) = input to 8086, connected to BUSY output of 8087.
+TEST = HIGH → 8086 waits (8087 is busy).
+TEST = LOW → 8086 continues execution (8087 done).
