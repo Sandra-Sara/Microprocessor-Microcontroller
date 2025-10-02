@@ -1,0 +1,36 @@
+The 8086 microprocessor has a 20-bit address bus, so it can access 1 MB (2²⁰ bytes) of memory.
+But registers in 8086 are only 16-bit, which means a single register can point to max 64 KB (2¹⁶) memory.
+To solve this, memory segmentation is used.
+🔹 Segment Address & Base Address
+Memory is divided into segments (chunks of max 64 KB each).
+A segment address is stored in a segment register (CS, DS, SS, ES).
+Base address of segment = Segment address × 10H (left shift by 4 bits).
+Example:
+If DS = 1000H → Base address = 1000H × 10H = 10000H.
+🔹 Offset Address
+Inside each segment, we use an offset address (16-bit).
+Offset ranges from 0000H → FFFFH (i.e., max 64 KB).
+Offset is stored in registers like IP, BP, SP, BX, SI, DI.
+🔹 Logical Address
+Combination of Segment : Offset
+Example: DS : 1234H
+→ means segment DS is base, and offset = 1234H.
+🔹 Physical Address
+The real 20-bit address in memory.
+Formula:
+Physical Address =(Segment Address×10𝐻)+Offset
+Example:
+If DS = 1000H and Offset = 1234H
+→ Base address = 10000H
+→ Physical address = 10000H + 1234H = 11234H
+
+
+🔹 Advantages of Segmentation
+Can access 1 MB memory even with 16-bit registers.
+Separate segments: Code, Data, Stack, Extra.
+Each segment can be up to 64 KB.
+Supports multitasking → CPU can switch between programs by reloading 4 segment registers.
+Keeps code and data separate → better organization & protection.
+ So in short:
+Logical address = Segment:Offset (what programmer sees).
+Physical address = (Segment × 10H) + Offset (what memory sees).
