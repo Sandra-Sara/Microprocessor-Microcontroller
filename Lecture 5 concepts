@@ -1,0 +1,55 @@
+1st Byte of Instruction (Opcode + Control bits)
+In 8086, the first byte of instruction generally contains:
+Opcode field (6 bits):
+These 6 bits specify which operation is to be performed.
+Example: ADD, MOV, SUB, etc. Each operation has a unique binary code.
+Direction bit (D bit):
+This decides the direction of data transfer (source/destination).
+If D = 1 → Register specified in byte 2 is destination.
+If D = 0 → Register specified in byte 2 is source.
+Word bit (W bit):
+This decides the size of the operation.
+If W = 0 → 8-bit operation (operand = byte register like AL, BL).
+If W = 1 → 16-bit operation (operand = word register like AX, BX).
+
+
+
+🔹 Structure of 2nd Byte (8 bits total)
+It is divided into 3 fields:
+MOD (2 bits) → Defines addressing mode (is operand in register or memory, with/without displacement?).
+REG (3 bits) → Specifies a register (its role as source or destination is decided by D bit in byte 1).
+R/M (3 bits) → Works together with MOD to specify the second operand (register or memory address).
+🔹 1. REG Field (3 bits)
+Identifies a register operand (AX, BX, CL, etc.).
+Which operand is "source" or "destination" depends on the D bit in byte 1:
+D = 1 → REG = destination register.
+D = 0 → REG = source register.
+Width (8-bit or 16-bit) is decided by the W bit.
+Example:
+MOV AX, BX → D=1 → REG field = AX (destination), R/M field = BX (source).
+MOV BX, AX → D=0 → REG field = AX (source), R/M field = BX (destination).
+🔹 2. MOD Field (2 bits)
+Specifies whether the second operand (R/M) is in a register or memory:
+MOD (2 bits)	Meaning
+00	Memory addressing, no displacement (just R/M gives the effective address).
+01	Memory addressing with 8-bit displacement.
+10	Memory addressing with 16-bit displacement.
+11	Register addressing (R/M field directly specifies a register).
+🔹 3. R/M Field (3 bits)
+Interpreted depending on MOD:
+If MOD = 11 → R/M directly selects a register.
+If MOD = 00,01,10 → R/M + MOD tells which memory addressing mode is used (like [BX+SI], [BP+DI], etc.).
+🔹 Putting it All Together
+So, the 2nd byte works like this:
+[ MOD (2 bits) | REG (3 bits) | R/M (3 bits) ]
+MOD = addressing type (register or memory, displacement or not).
+REG = one operand (source/destination depends on D bit).
+R/M = the other operand (register/memory, defined by MOD).
+🔹 Example
+Instruction: MOV AX, [BX+SI]
+Byte 1 → Opcode + D + W.
+Byte 2 →
+MOD = 00 (memory without displacement)
+REG = AX (selected by D bit = destination)
+R/M = 000 (which means [BX+SI])
+So this encodes “move from memory at address [BX+SI] into AX”.
