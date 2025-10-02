@@ -1,0 +1,39 @@
+1. Bus Interface Unit (BIU)
+The BIU handles all communication with memory and I/O devices.
+Main jobs of BIU:
+Performs external bus operations (communicates with outside world).
+Fetches instructions from memory.
+Reads/writes data and operands from/to memory.
+Handles input/output operations with peripheral devices.
+Fills instruction queue (a pipeline mechanism).
+Generates addresses using segment registers (CS, DS, SS, ES) + instruction pointer (IP).
+ In the diagram:
+Address bus & Data bus connected externally.
+Address generation and bus control block.
+Instruction Queue: Pre-fetches up to 6 bytes of instructions to speed execution (pipelining).
+Segment Registers (CS, DS, SS, ES) + Instruction Pointer (IP) for memory addressing.
+
+2. Execution Unit (EU)
+The EU is responsible for decoding and executing instructions.
+Main jobs of EU:
+Decodes and executes instructions fetched by BIU.
+Takes instructions from the instruction queue.
+Uses data from general-purpose registers (AX, BX, CX, DX, SI, DI, BP, SP) or memory.
+Generates operand addresses (then hands them to BIU).
+Updates flags register (status flags like Zero, Carry, Sign, etc.) during execution.
+Waits if instruction queue is empty (BIU refills it).
+In the diagram:
+General Registers (AH/AL, BH/BL, etc.) for computation.
+Arithmetic Logic Unit (ALU) performs arithmetic & logic operations.
+Flags Register stores results of operations.
+How They Work Together
+BIU and EU work in parallel:
+BIU fetches next instructions and keeps them in the queue.
+EU executes current instructions.
+This parallelism (called pipelining) improves performance.
+Example:
+While EU is executing one instruction, BIU can already fetch the next one.
+
+BIU = fetches, communicates, generates addresses.
+EU = decodes, executes, updates flags.
+Together, they allow faster execution through pipelined architecture.
