@@ -1,0 +1,35 @@
+Flags
+Registers of 8086 – Flags Register
+The Flags Register in 8086 is a 16-bit register that stores the current state of the processor. It contains status flags, control flags, and unused bits.
+Breakdown:
+1. Conditional / Status Flags
+These indicate the result of arithmetic or logical operations.
+CF (Carry Flag, bit 0):
+Set = if there is a carry out of the MSB (most significant bit) in addition or borrow in subtraction.
+Example: FFH + 01H = 100H → CF = 1.
+PF (Parity Flag, bit 2):
+Set = if the result has an even number of 1s in the lower 8 bits.
+Used for error checking.
+AF (Auxiliary Carry Flag, bit 4):
+Set = if there is a carry/borrow from bit 3 to bit 4 (used in BCD arithmetic).
+ZF (Zero Flag, bit 6):
+Set = if the result of an operation is 0.
+SF (Sign Flag, bit 7):
+Set = if the result is negative (MSB = 1).
+OF (Overflow Flag, bit 11):
+Set = if signed arithmetic result is too large to fit in the destination.
+Example: 127 + 2 = -127 (overflow).
+2. Control Flags
+These control the operation of the processor.
+TF (Trap Flag, bit 8):
+If set → processor enters single-step (debugging) mode.
+Executes one instruction at a time.
+IF (Interrupt Flag, bit 9):
+If set → enables maskable hardware interrupts.
+If cleared → disables interrupts.
+DF (Direction Flag, bit 10):
+Controls string instructions.
+If DF=0 → process from low address to high address (increment SI/DI).
+If DF=1 → process from high address to low address (decrement SI/DI).
+3. Unused bits
+Some flag bits are not used (shown as U in the diagram).
