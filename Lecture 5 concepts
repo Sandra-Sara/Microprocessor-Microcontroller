@@ -70,6 +70,7 @@ So the total memory range is from 00000H to FFFFFH = 1 MB.
 A segment register in 8086 is 16-bit, so it can address 
 2^16 = 64 𝐾𝐵 at a time.
 Therefore, the whole 1 MB memory is divided into:1𝑀𝐵/64𝐾𝐵 = 16 blocks
+resister gula 16 block e vag hoe jacche 
 
 
 4. Block Addressing
