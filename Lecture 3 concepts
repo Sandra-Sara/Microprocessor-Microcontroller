@@ -33,3 +33,17 @@ If DF=0 → process from low address to high address (increment SI/DI).
 If DF=1 → process from high address to low address (decrement SI/DI).
 3. Unused bits
 Some flag bits are not used (shown as U in the diagram).
+
+
+Pointers and Index Group of Registers:
+ SP -> stack pointer.
+ contains offset address or stack top address.
+ stack address = [SS]×10 + [SP]
+ BP-> base pointer.
+ used to access data area in stack segment.
+ stack address = [SS]×10 + [BP]
+ IP -> instruction pointer.
+ contains offset address of next instruction to be fetched.
+ cannot be programmed by programmer.
+ SI, DI, BP ->
+ also used as general purpose registers
