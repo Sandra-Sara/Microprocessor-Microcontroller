@@ -1,3 +1,4 @@
+8086 Microprocessor architecture(Page 3)
 1. Bus Interface Unit (BIU)
 The BIU handles all communication with memory and I/O devices.
 Main jobs of BIU:
@@ -37,3 +38,35 @@ While EU is executing one instruction, BIU can already fetch the next one.
 BIU = fetches, communicates, generates addresses.
 EU = decodes, executes, updates flags.
 Together, they allow faster execution through pipelined architecture.
+
+Slide 5 explanation
+Step-by-step Flow:
+From Memory → Update Opcode Queue
+Instructions are fetched from memory into the instruction queue.
+This prefetching allows overlapping of fetching and execution (pipelining).
+Decode First Byte
+The first byte of the instruction is taken from the queue.
+The decoder checks this byte to determine:
+The length of the opcode (1 byte or 2 bytes).
+Updates the queue accordingly.
+Is it a Single Byte Instruction?
+If Yes (1-byte instruction):
+The instruction is executed directly along with any required data bytes.
+If No (multi-byte instruction):
+The second byte is fetched from the queue.
+Then the opcode is fully decoded.
+Execute Instruction
+Once the instruction bytes are decoded, the instruction is executed with its associated data (if any).
+Repeat the Same Procedure
+After execution, the next instruction in the queue is processed.
+This cycle repeats for all successive instructions.
+
+CS:IP = the exact memory address of the next instruction.
+🔹 What does “odd/even” mean here?
+Memory is byte-addressable → every address points to 1 byte.
+If IP is even → the instruction starts at an even memory boundary. In this case, the CPU assumes the instruction is 2 bytes long and 
+fetches 2 bytes.
+If IP is odd → the instruction starts at an odd memory boundary. In this case, the CPU fetches only 1 byte (a single-byte instruction).
+
+
+
