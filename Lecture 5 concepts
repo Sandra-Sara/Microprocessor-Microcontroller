@@ -53,3 +53,35 @@ MOD = 00 (memory without displacement)
 REG = AX (selected by D bit = destination)
 R/M = 000 (which means [BX+SI])
 So this encodes “move from memory at address [BX+SI] into AX”.
+
+
+
+1. 8086 Address Bus
+The 8086 microprocessor has a 20-bit address bus.
+With 20 bits, we can generate 
+2^20 = 1,048,576220
+=1,048,576 different addresses.
+That equals 1 MB of memory space.
+ Memory Address Range
+The first address is 00000H.
+The last address is FFFFFH (20-bit maximum).
+So the total memory range is from 00000H to FFFFFH = 1 MB.
+3. Division into Blocks
+A segment register in 8086 is 16-bit, so it can address 
+2^16 = 64 𝐾𝐵 at a time.
+Therefore, the whole 1 MB memory is divided into:1𝑀𝐵/64𝐾𝐵 = 16 blocks
+
+
+4. Block Addressing
+Each block = 64 KB.
+The most significant hex digit increases by 1 for each block.
+Example:
+Block 0 → 00000H – 0FFFFH
+Block 1 → 10000H – 1FFFFH
+Block 2 → 20000H – 2FFFFH
+Block 3 → 30000H – 3FFFFH
+...
+Block F (16th block) → F0000H – FFFFFH
+Summary:
+The 8086 microprocessor can access 1 MB of memory (00000H–FFFFFH) using its 20-bit address bus. This space is divided into 16 blocks of 64 KB each, 
+and the highest hex digit of the address increases by 1 for each block.
