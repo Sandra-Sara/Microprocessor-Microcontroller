@@ -52,3 +52,164 @@ The TEST pin provides this handshake mechanism.
 TEST (Pin 23) = input to 8086, connected to BUSY output of 8087.
 TEST = HIGH → 8086 waits (8087 is busy).
 TEST = LOW → 8086 continues execution (8087 done).
+
+
+
+🔹 Pin 33 → MN/ MX (Minimum / Maximum Mode)
+Function: Selects whether 8086 will operate in Minimum Mode or Maximum Mode.
+When High (1) → Minimum Mode
+8086 works as a single processor system.
+Control signals are generated internally by the 8086.
+When Low (0) → Maximum Mode
+8086 works in a multiprocessor system (with coprocessors like 8087).
+Some control signals are provided externally through a bus controller (8288).
+
+
+
+🔹 Pin 24 → INTA (Interrupt Acknowledge) [Minimum Mode]
+Function: A signal given by 8086 to acknowledge an interrupt request.
+Process:
+An external device requests service via NMI (Non-Maskable Interrupt) or INTR (Maskable Interrupt).
+If accepted, the CPU responds with INTA (active low signal).
+This tells the external device: “Your request is acknowledged, now place the interrupt vector on the data bus.”
+
+
+
+🔹 Pin 25 → ALE (Address Latch Enable) [Minimum Mode]
+Function: Used to separate address and data signals on the multiplexed bus.
+How it works:
+In 8086, AD0–AD15 lines carry Address (A) during the first clock phase (T1), and later they carry Data (D).
+To properly store the address, external latches are used (e.g., 74LS373).
+ALE (positive pulse) tells the latch: “Valid address is on the bus, store it now.”
+
+
+
+🔹 Pin 28 → M/ IO (Memory/Input-Output) [Minimum Mode]
+Function: Distinguishes whether the operation is related to Memory or I/O.
+M/IO = 1 → Memory operation
+M/IO = 0 → I/O operation
+This helps external circuits understand whether the CPU is accessing memory or an input/output device.
+
+
+
+🔹 Pin 27 → DT/‾R (Data Transmit/Receive)
+Type: Output signal (from CPU).
+Purpose: Controls the direction of data flow through external transceivers (like 8286).
+How it works:
+DT/‾R = 1 → Processor sends out (transmits) data.
+DT/‾R = 0 → Processor receives data from memory or I/O.
+Needed because AD0–AD15 are bidirectional lines (they carry both input and output).
+
+
+
+🔹 Pin 26 → DEN (Data Enable)
+Type: Output signal (from CPU).
+Purpose: Enables external data transceivers during data transfer.
+When active:
+It goes active (LOW) during the data phase of bus cycles.
+Specifically: from middle of T2 to middle of T4 (when valid data is present on the bus).
+This ensures external devices only drive the bus when data is valid, preventing bus conflicts.
+
+
+
+🔹 Pin 29 → WR (Write)
+Type: Output signal (from CPU).
+Purpose: Indicates a write operation.
+Active LOW signal.
+When active, CPU writes data into memory or I/O device.
+
+
+
+🔹 Pin 32 → RD (Read)
+Type: Output signal (from CPU).
+Purpose: Indicates a read operation.
+Active LOW signal.
+When active, CPU reads data from memory or I/O device and places it on the data bus.
+
+
+🔹 Pin 31 → HOLD (Hold Request)
+Type: Input pin (to CPU).
+Purpose: Used by external devices (like DMA controllers) to request control of address and data buses.
+How it works:
+When an external device asserts HOLD = 1, it asks the CPU to release control of the buses.
+The CPU finishes its current bus cycle.
+Then it releases control and responds with HLDA = 1.
+
+
+
+🔹 Pin 30 → HLDA (Hold Acknowledge)
+Type: Output pin (from CPU).
+Purpose: Sent by the CPU to confirm that it has granted the bus to the external device.
+How it works:
+When the CPU sees HOLD = 1, it eventually sends HLDA = 1 to the requesting device.
+CPU’s buses (address, data, control) are now tri-stated → free for external device to use.
+Once HOLD goes LOW, CPU takes back control and HLDA goes LOW.
+
+
+Pins 24 & 25 → QS1 and QS0 (Queue Status Signals) [Maximum Mode Only]
+Type: Output signals (from CPU).
+Purpose: Give the status of the instruction queue (the 6-byte prefetch queue in 8086).
+Details:
+| QS1 | QS0 | Status Description                  |
+| --- | --- | ----------------------------------- |
+| 0   | 0   | No operation                        |
+| 0   | 1   | First byte of opcode from the queue |
+| 1   | 0   | Queue is empty                      |
+| 1   | 1   | Subsequent byte from the queue      |
+
+
+
+🔹 S2, S1, S0 → Output Status Signals (Maximum Mode)
+Type: Output pins (from CPU).
+Purpose: Tell the type of bus cycle / operation the 8086 is performing.
+When active:
+Valid during T4 of the previous bus cycle, and during T1 & T2 of the current cycle.
+Passive (don’t care) during T3 of the current bus cycle.
+These signals go to the bus controller (8288) in maximum mode, which then generates the actual control signals like RD, WR, INTA, etc.
+| S2 | S1 | S0 | CPU Bus Cycle / Operation       |
+| -- | -- | -- | ------------------------------- |
+| 0  | 0  | 0  | Interrupt Acknowledge           |
+| 0  | 0  | 1  | Read I/O Port                   |
+| 0  | 1  | 0  | Write I/O Port                  |
+| 0  | 1  | 1  | Halt                            |
+| 1  | 0  | 0  | Code Access (instruction fetch) |
+| 1  | 0  | 1  | Read Memory                     |
+| 1  | 1  | 0  | Write Memory                    |
+| 1  | 1  | 1  | Passive (no operation on bus)   |
+How it Works
+In Maximum Mode, 8086 doesn’t directly generate RD, WR, INTA, etc.
+Instead, it outputs S2, S1, S0 → which tell the bus controller (8288) what type of cycle is happening.
+The 8288 then decodes these signals and produces proper control outputs for memory, I/O devices, or interrupts.
+
+Summary
+S2, S1, S0 = 3-bit bus cycle status code (only in Max Mode).
+They inform what type of operation CPU is doing: memory read/write, I/O read/write, interrupt acknowledge, halt, code fetch, or passive.
+They are active during T4 (previous cycle), T1, T2 (current cycle).
+Used by bus controller (8288) to generate control signals.
+
+
+🔹 Pin 29 → LOCK
+Type: Output signal (from CPU).
+Purpose: Prevents other processors or bus masters from gaining control of the system bus.
+How it is activated:
+Comes from the LOCK prefix instruction in the program.
+When LOCK = LOW, it tells external hardware that the CPU must not be interrupted during the current critical instruction.
+Effect:
+All HOLD requests are denied (CPU does not release the bus).
+Interrupts are masked until the instruction completes.
+Use case: Ensures atomic operations in multiprocessor systems (like updating a shared memory location).
+
+
+
+🔹 Pins 30 & 31 → RQ/GT1 and RQ/GT0 (Request/Grant signals)
+Type: Bidirectional signals.
+Purpose: Used in multiprocessor or DMA systems for bus arbitration.
+How they work:
+Another processor (or bus master) sends a Request through one of these pins to gain control of the bus.
+The 8086, after completing its current bus cycle, responds with a Grant signal.
+This means CPU releases the bus for the requesting device.
+When the external device finishes, it releases the line so the CPU can take the bus back.
+Two lines (RQ/GT0 and RQ/GT1) → allow priority levels for different devices/processors.
+
+
+
