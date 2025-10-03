@@ -34,3 +34,11 @@ Keeps code and data separate → better organization & protection.
  So in short:
 Logical address = Segment:Offset (what programmer sees).
 Physical address = (Segment × 10H) + Offset (what memory sees).
+
+
+
+Segment address: 16-bit, reside in segment registers (CS, DS, ES, SS).
+ Base address: 20-bit, Segment address × 10H
+ Offset address : =Effective address,16-bit,resideinIP,BP,SP,BX,SI,DI.
+ Logical address:= Segment : Offset = DS : 1234H
+ Physical address :=Real address,=Segment address × 10H +Offset address
