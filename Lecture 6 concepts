@@ -78,3 +78,33 @@ If we store a word at address 10001H (odd address):
 Lower byte → stored at 10001H (high bank).
 Upper byte → stored at 10002H (low bank).
  Needs 2 memory cycles (slower).
+
+
+Left Side: Transfer (A) → Even-Addressed Word Transfer
+Suppose the CPU wants to read/write a word (16 bits) starting at address A (where A is even, i.e., A0 = 0).
+In 8086 memory organization:
+(Lower) byte goes into the Low bank (D7–D0).
+(Upper) byte goes into the High bank (D15–D8).
+Control signals:
+A0 = 0 (even address).
+BHE = 0 (Bus High Enable active).
+Both low and high banks are active in this cycle.
+ Result: The full 16-bit word is transferred in one bus cycle.
+This is the fast and efficient case.
+
+
+🔹 Right Side: Transfer (A+1) → Odd-Addressed Word Transfer
+Suppose the CPU wants to read/write a word (16 bits) starting at address A+1 (odd address, i.e., A0 = 1).
+What happens:
+The first byte (at address A+1) is stored in the High bank (D15–D8).
+The second byte (at address A+2, which is even) goes into the Low bank (D7–D0).
+Problem: Both bytes are not aligned to banks simultaneously.
+Control signals:
+Cycle 1 → A0 = 1, BHE = 0 → Only high bank active (transfer of byte at odd address).
+Cycle 2 → A0 = 0, BHE = 1 → Only low bank active (transfer of next byte).
+Result: The word requires two bus cycles (one for each byte).
+This makes odd-address word transfers slower than even-address ones.
+🔹 Why the Difference?
+Even word transfer → naturally aligned to banks, so one cycle is enough.
+Odd word transfer → crosses bank boundary, so two cycles are needed.
+This is why in 8086 system design, aligning word data at even addresses improves performance.
