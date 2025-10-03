@@ -42,3 +42,39 @@ Segment address: 16-bit, reside in segment registers (CS, DS, ES, SS).
  Offset address : =Effective address,16-bit,resideinIP,BP,SP,BX,SI,DI.
  Logical address:= Segment : Offset = DS : 1234H
  Physical address :=Real address,=Segment address × 10H +Offset address
+
+
+Memory Organization
+🔹 Key Points:
+8086 has a 20-bit address bus → it can address 1 MB memory (00000H – FFFFFH).
+The memory is organized into 2 banks of 512 KB each:
+Low Bank (Even addresses)
+High Bank (Odd addresses)
+🔹 Banks:
+Low Bank (Even Bank)
+Stores data at even addresses (00000H, 00002H, 00004H …).
+Selected when: BHE = 1, A0 = 0.
+High Bank (Odd Bank)
+Stores data at odd addresses (00001H, 00003H, 00005H …).
+Selected when: BHE = 0, A0 = 1.
+🔹 Why 2 Banks?
+The 8086 has a 16-bit data bus, so it can read/write 2 bytes at a time.
+If the word starts at an even address, both bytes come from the same cycle (one from low bank, one from high bank).
+If the word starts at an odd address, the 8086 needs two memory cycles (since the word is split across two banks).
+🔹 Signals Used:
+A0 (Address line 0) → decides whether the access is odd/even address.
+BHE (Bus High Enable) → decides whether high-order byte (D15–D8) is active.
+A0	BHE	Access Type
+0	0	Word at even address (both banks active)
+0	1	Byte at even address (low bank only)
+1	0	Byte at odd address (high bank only)
+1	1	Invalid (no memory access)
+🔹 Example:
+Suppose we want to store a word (2 bytes) at address 10000H.
+Lower byte → stored at 10000H (low bank).
+Upper byte → stored at 10001H (high bank).
+ Both banks accessed simultaneously.
+If we store a word at address 10001H (odd address):
+Lower byte → stored at 10001H (high bank).
+Upper byte → stored at 10002H (low bank).
+ Needs 2 memory cycles (slower).
