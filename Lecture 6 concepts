@@ -27,7 +27,7 @@ If DS = 1000H and Offset = 1234H
 
 🔹 Advantages of Segmentation
 Can access 1 MB memory even with 16-bit registers.
-Separate segments: Code, Data, Stack, Extra.
+Separate segments: Code Segment, Data Segment, Stack Segment, Extra Segment.
 Each segment can be up to 64 KB.
 Supports multitasking → CPU can switch between programs by reloading 4 segment registers.
 Keeps code and data separate → better organization & protection.
