@@ -53,3 +53,12 @@ External data memory:
 Addressed using DPTR (or R0/R1 for indirect modes).
 The bus uses ALE to latch low address, then performs read/write cycles with multiplexed address/data through Port 0 and high address through Port 2.
 Buffer: Temporarily stages data during bus cycles to/from external memory.
+
+
+Step 7: Interacting with the outside world via ports
+Port drivers and latches (P0, P1, P2, P3): Each port has latches and drivers that set output levels or read inputs.
+Port 0: Multiplexed address/data bus for external memory; needs external pull‑ups when used as general I/O.
+Port 2: Carries high address lines for external memory when needed; otherwise, general I/O.
+Port 1: Pure general-purpose I/O (no alternate bus function).
+Port 3: General I/O plus special functions (e.g., serial, interrupts, timer inputs, read/write strobes).
++Vcc, Vss: Power and ground that feed all internal blocks and I/O drivers.
