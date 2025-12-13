@@ -21,3 +21,10 @@ ALE (Address Latch Enable): Used to demultiplex the low address/data bus (especi
 Step 3: Instruction capture and decode
 Instruction Register: Receives the fetched opcode from program memory.
 Timing and control: Decodes the opcode, generates micro‑operations (the internal steps that carry out the instruction), and orchestrates data movement across buses.
+
+Step 4: Data movement via internal buses
+Internal data bus: Connects CPU core (ALU, ACC, B, PSW), RAM, SFRs, and DPTR. It’s how operands and results travel inside the chip.
+RAM Address Register: Selects the address within internal RAM for reads/writes.
+RAM (internal data memory):
+Lower bytes include register banks (R0–R7), bit‑addressable area, and general-purpose RAM.
+Upper area contains Special Function Registers (SFRs) for ports, timers, serial, interrupts, etc.
