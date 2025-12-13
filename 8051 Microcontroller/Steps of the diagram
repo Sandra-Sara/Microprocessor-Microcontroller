@@ -6,3 +6,14 @@ Step 1: Clock and reset bring the chip to life
 Oscillator (XTAL1, XTAL2): A crystal or external clock feeds the oscillator, generating the system clock that synchronizes all operations.
 Timing and control: Distributes clock pulses and control signals to the CPU, memory, and peripherals; organizes machine cycles and instruction timing.
 Reset (RST): When asserted, it clears key registers, initializes the Program Counter (PC) to the reset vector, and sets the system to a known state.
+
+Step 2: Program memory fetch begins
+ROM (program memory): Stores your compiled program (instructions). In classic 8051, this can be internal or external depending on the EA pin.
+EA (External Access):
+EA = 1: Use internal ROM (if present) first; can still map external if needed.
+EA = 0: Fetch instructions exclusively from external program memory.
+Program Counter (PC): Holds the address of the next instruction to fetch.
+Program Address Register + PC incrementer + Buffer: The PC sends the current address to the program memory. After each fetch,
+the PC incrementer advances the PC unless an instruction modifies it (e.g., jump or call).
+PSEN (Program Store Enable): Control signal that enables reads from external program memory during instruction fetch.
+ALE (Address Latch Enable): Used to demultiplex the low address/data bus (especially on Port 0) so external memory can distinguish address vs data phases.
