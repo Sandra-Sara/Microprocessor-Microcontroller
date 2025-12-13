@@ -17,3 +17,7 @@ Program Address Register + PC incrementer + Buffer: The PC sends the current add
 the PC incrementer advances the PC unless an instruction modifies it (e.g., jump or call).
 PSEN (Program Store Enable): Control signal that enables reads from external program memory during instruction fetch.
 ALE (Address Latch Enable): Used to demultiplex the low address/data bus (especially on Port 0) so external memory can distinguish address vs data phases.
+
+Step 3: Instruction capture and decode
+Instruction Register: Receives the fetched opcode from program memory.
+Timing and control: Decodes the opcode, generates micro‑operations (the internal steps that carry out the instruction), and orchestrates data movement across buses.
