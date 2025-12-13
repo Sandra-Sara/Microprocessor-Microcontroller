@@ -77,3 +77,10 @@ Decode: Timing/control issues micro‑operations and selects sources/destination
 Execute: ALU operates on ACC/B or RAM data; PSW flags update. DPTR/SP/PC adjust as needed.
 Memory/I/O: If the instruction reads/writes memory or ports, the RAM Address Register or external bus cycles perform it. Port latches reflect outputs or capture inputs.
 Next: PC increments or changes (branch/call/interrupt), and the cycle repeats on the system clock.
+
+Step 10: Control signals and special notes
+ALE: Toggles to separate address and data phases on Port 0 for external memory; also useful as a timing reference.
+PSEN: Enables external program memory during fetch cycles.
+EA: Selects internal vs external program memory use.
+RST: Forces initialization; after reset, the CPU starts at the predefined vector.
+Port multiplexing: When using external memory, Port 0/2 serve as address/data lines; when not, they’re normal GPIO.
