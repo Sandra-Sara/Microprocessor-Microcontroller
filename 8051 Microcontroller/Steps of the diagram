@@ -4,7 +4,5 @@ and I/O to talk to the outside world. Here’s a clear, step‑by‑step walkthr
 
 Step 1: Clock and reset bring the chip to life
 Oscillator (XTAL1, XTAL2): A crystal or external clock feeds the oscillator, generating the system clock that synchronizes all operations.
-
 Timing and control: Distributes clock pulses and control signals to the CPU, memory, and peripherals; organizes machine cycles and instruction timing.
-
 Reset (RST): When asserted, it clears key registers, initializes the Program Counter (PC) to the reset vector, and sets the system to a known state.
