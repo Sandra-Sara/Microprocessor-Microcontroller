@@ -84,3 +84,11 @@ PSEN: Enables external program memory during fetch cycles.
 EA: Selects internal vs external program memory use.
 RST: Forces initialization; after reset, the CPU starts at the predefined vector.
 Port multiplexing: When using external memory, Port 0/2 serve as address/data lines; when not, they’re normal GPIO.
+
+
+Quick mental model
+Brain: ALU + ACC/B + PSW.
+Memory: ROM (program) + RAM (data/SFR/stack).
+Roads: Internal bus + external address/data bus via P0/P2 with ALE/PSEN.
+Clock: Oscillator + timing/control.
+
