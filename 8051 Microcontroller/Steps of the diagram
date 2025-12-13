@@ -69,3 +69,11 @@ Timers/Counters: Provide time bases, measure intervals, generate baud rates, or 
 Serial port: Full‑duplex UART for asynchronous communication; uses SBUF, SCON, and can rely on timers for baud generation.
 Interrupt controller: Prioritizes and vectors to service routines when events occur (timer overflow, serial RX/TX, external pins).
 It saves context (via stack) and resumes after ISR with RETI.
+
+
+Step 9: Putting it together — a single instruction cycle
+Fetch: PC addresses program memory; instruction byte enters the Instruction Register (PSEN/ALE manage external fetch if used).
+Decode: Timing/control issues micro‑operations and selects sources/destinations on the internal bus.
+Execute: ALU operates on ACC/B or RAM data; PSW flags update. DPTR/SP/PC adjust as needed.
+Memory/I/O: If the instruction reads/writes memory or ports, the RAM Address Register or external bus cycles perform it. Port latches reflect outputs or capture inputs.
+Next: PC increments or changes (branch/call/interrupt), and the cycle repeats on the system clock.
