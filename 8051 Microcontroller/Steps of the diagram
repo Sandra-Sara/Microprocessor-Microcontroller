@@ -28,3 +28,16 @@ RAM Address Register: Selects the address within internal RAM for reads/writes.
 RAM (internal data memory):
 Lower bytes include register banks (R0–R7), bit‑addressable area, and general-purpose RAM.
 Upper area contains Special Function Registers (SFRs) for ports, timers, serial, interrupts, etc.
+
+Step 5: CPU executes the instruction
+Core registers and ALU
+ACC (Accumulator): The primary operand/result register for arithmetic, logic, and data moves.
+
+B register: Used mainly with ACC for multiply/divide and some special operations.
+TMP1, TMP2 (temporary registers): Hold intermediate values during multi‑cycle operations.
+ALU (Arithmetic Logic Unit): Performs add, subtract, AND/OR/XOR, compares, shifts/rotates, and bit operations.
+PSW (Program Status Word): Holds flags and control bits (e.g., Carry, Auxiliary Carry, Overflow, Parity, Register Bank select). Instructions set/clear flags based on ALU results.
+Pointers and flow control
+DPTR (Data Pointer): A 16‑bit pointer used for addressing external data memory, tables in code memory, or indirect addressing in certain instructions.
+Stack Pointer (SP): Points to the current top of the internal RAM stack; call/return and push/pop use it to save/restore context.
+Program Counter (PC): Updated by sequential flow (PC incrementer) or control transfers (jumps, calls, interrupts).
