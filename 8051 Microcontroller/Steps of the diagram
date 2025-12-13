@@ -62,3 +62,10 @@ Port 2: Carries high address lines for external memory when needed; otherwise, g
 Port 1: Pure general-purpose I/O (no alternate bus function).
 Port 3: General I/O plus special functions (e.g., serial, interrupts, timer inputs, read/write strobes).
 +Vcc, Vss: Power and ground that feed all internal blocks and I/O drivers.
+
+
+Step 8: Peripherals support timed and asynchronous tasks
+Timers/Counters: Provide time bases, measure intervals, generate baud rates, or count external events. Controlled via SFRs; can trigger interrupts.
+Serial port: Full‑duplex UART for asynchronous communication; uses SBUF, SCON, and can rely on timers for baud generation.
+Interrupt controller: Prioritizes and vectors to service routines when events occur (timer overflow, serial RX/TX, external pins).
+It saves context (via stack) and resumes after ISR with RETI.
